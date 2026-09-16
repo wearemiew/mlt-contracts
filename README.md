@@ -9,11 +9,11 @@ Agents have reorganised how code is written. A developer working with one produc
 and that is not in question. The next step, which every team is taking, is to bring them into
 planning: learning the rules the product must follow and the people who will use it, writing
 requirements, specs and issues. There is no settled practice for that. Each team is finding out;
-this document is one team's proposal, from one product it planned that way.
+this document is a proposal, drawn from one product planned that way.
 
 ## In short
 
-On one product we planned with agents in every step, and the mistakes that cost most were the ones
+On one product planned with agents in every step, the mistakes that cost most were the ones
 no step could see — one word that meant one thing to the lawyers, another on the screen and two
 things in the model, found after both sides had built. The proposal: at every point where one
 team's work becomes another's input, the shape they meet on is negotiated and agreed in one small
@@ -25,7 +25,7 @@ to it.
 
 ## What happened
 
-We planned a product with agents involved in every step. Requirements were written with them;
+A product was planned with agents involved in every step. Requirements were written with them;
 backend issues were derived from the requirements with them; frontend tasks were derived from the
 backend issues with them. Each step was produced from the output of the step before, and each was
 faster and larger for it.
@@ -49,7 +49,7 @@ could see: the design files and a running prototype. By then both sides had buil
 
 ## Why
 
-We see two causes, and between them they explain most of it.
+Two causes suggest themselves, and between them they explain most of it.
 
 **Tacit knowledge.** A product is planned and built by four parties — product, design, frontend,
 backend — and in this project a fifth, the AI service. Each, with its agents, gathers the
