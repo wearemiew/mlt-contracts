@@ -7,6 +7,25 @@ other's reasons.
 
 The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md).
 
+## What this is for
+
+When a screen and the API behind it are built by different people — and, increasingly, by different
+agents — most defects are not bugs in either side. They are mismatched expectations: a field one side
+assumed the other would send, a state one side thought was derived and the other thought was typed
+in, an error the client never knew could come back. That knowledge is tacit: it lives in a
+conversation, a design file or someone's head, and every new person or agent has to reconstruct it.
+
+A contract makes the one thing both sides depend on explicit and small: the wire shape. Once it is
+agreed, the side serving the endpoint builds to the text and the side consuming it builds to the
+text, in parallel, without either needing to understand the other's requirements or reasons. When
+something is wrong, the contract says whose it is: a response that differs from the file is the
+server's defect, a request that differs is the client's, and a shape that turned out wrong is a
+change to the file — reviewed by the same people who agreed it.
+
+The approval mechanics exist so this scales past two people in a room. Ownership is per pair of
+sides, approval is a GitHub review tied to a specific commit, and a change after approval needs a
+fresh one, automatically.
+
 ## How a contract is agreed
 
 1. Open a pull request that adds or changes one file under `contracts/`.
