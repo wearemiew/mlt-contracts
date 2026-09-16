@@ -167,15 +167,15 @@ contract file under `contracts/` that no rule covers fails the check — the fol
 
 ## How a contract is agreed
 
-1. **Open a pull request for the smallest set of files closed under type references.** A file that
-   names a type another file owns depends on that file; the two travel together. Files that share
-   no type share no pull request and never wait on each other. One feature usually yields a few:
-   the group around one aggregate's types, the group around another's, a read that references
-   nothing. Neither one-file-per-request nor one-request-per-feature is the unit — the first
-   collides when two parties contract the same endpoint at once, the second serialises every party
-   onto one moving head, where each push resets everyone else's approval. A type that turns out to
-   be needed by two groups is a dependency just found: extract it into its own small pull request,
-   agreed first, rather than merging the groups.
+1. **Open one pull request per piece of work that can be agreed and built on its own.** Scope it
+   the way the work is scoped — a task, a slice of a feature, a whole feature when it is small —
+   and by one test: nothing in it waits on anything outside it, and nothing outside it waits on it.
+   The point is parallel work: the moment a request is agreed, the people and agents on every side
+   of it start building, without waiting for any other contract to be agreed. Too fine and parties
+   collide contracting the same endpoint at once; too coarse and every party sits on one moving
+   head, where each push resets everyone else's approval and nobody starts. When two pieces turn
+   out to share something both need agreed first, that shared thing is its own, smaller pull
+   request, agreed before either.
 2. The owners of the files it touches review it. Ownership is per area, in
    [`.github/CODEOWNERS`](.github/CODEOWNERS), last matching rule wins — an area names as many
    people as must agree on its contracts, and different areas name different people. Every area
