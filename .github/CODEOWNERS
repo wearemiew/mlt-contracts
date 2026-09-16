@@ -7,6 +7,7 @@ contracts/portal-ai/**             @pauloedspinho20 @nunosilva
 contracts/backend-ai/**            @nunosilva @henriq350
 contracts/frontoffice-backend/**   @pauloedspinho20 @henriq350
 
-# Repository configuration, not contracts.
+# Repository configuration and the worked example, not contracts.
 /.github/**                        @henriq350
 /*.md                              @henriq350
+/contracts/EXAMPLE-CONTRACT.md     @henriq350

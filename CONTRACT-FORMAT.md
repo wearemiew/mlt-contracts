@@ -8,7 +8,7 @@ changes no endpoint has no contract.
 `contracts/<area>/<verb>-<slug>.md`, where `<area>` is a CODEOWNERS area — the people who must agree — for example
 `contracts/frontoffice-backend/post-certidoes.md`. The file holds the endpoint's **current** full
 shape as one block, optionally preceded by a sentence or two saying what the endpoint is for — see
-[EXAMPLE-CONTRACT.md](EXAMPLE-CONTRACT.md):
+[contracts/EXAMPLE-CONTRACT.md](contracts/EXAMPLE-CONTRACT.md):
 
 ````
 ```contract

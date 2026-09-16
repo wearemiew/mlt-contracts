@@ -11,7 +11,7 @@ review, in a design tool or in a chat; it is negotiated once, here, in a pull re
 one file.
 
 The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
-[EXAMPLE-CONTRACT.md](EXAMPLE-CONTRACT.md).
+[contracts/EXAMPLE-CONTRACT.md](contracts/EXAMPLE-CONTRACT.md).
 
 ## What this is for
 
