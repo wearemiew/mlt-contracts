@@ -1,37 +1,37 @@
 # Contracts
 
-The wire shape of every endpoint, agreed by everyone with a stake in it — whoever serves it, whoever
-consumes it, whoever designed the screen it feeds, whoever answers for the system as a whole — and
-the agents each of them works with. One file per endpoint, under `contracts/`. The file is the
-agreement: each side builds exactly what it says, and none of them needs the others' reasons.
+A planning tool for work split across parties — product, design, engineering — and the agents each
+of them works with.
 
-This is **contract-driven development (CDD)**: the contract is written and agreed first, and
-implementation on every side follows from it. Nothing about an endpoint is negotiated in code
-review, in a design tool or in a chat; it is negotiated once, here, in a pull request that touches
-one file.
+An agent plans and builds from the context it is given: one party's. It holds none of what that
+party knows but never wrote down — the field a screen assumes, the state a model treats as derived,
+the error a client never expected. That is tacit knowledge: it travels only with the people who
+hold it, and every agent boundary is a place it stops. The gap shows only after both sides have
+built.
+
+A contract writes down the one part of that knowledge every party depends on: the shape they meet
+on. It is a **first-class product of planning**. Planning a feature is arriving at the contracts it
+needs; work that crosses a party boundary is plannable only once its contract is agreed; an agreed
+contract is the unit that is scheduled and built — in parallel, by anyone or any agent. The
+agreement is a file, its approval is a pull request review, and implementation on every side
+follows from it. This is **contract-driven development (CDD)** — contract as in agreement, not as
+in test suite: nothing runs against it but the review.
+
+The contracts here are endpoints. The shape is not fixed to that: the same mechanics — one file,
+named owners, approval at a commit — serve anything two or more parties must agree on before
+building, and further shapes are added as the need for them appears. Shared types are one; events
+a server pushes (SSE, SignalR) and the messages it sends (email, notifications) are others.
 
 The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
 [contracts/EXAMPLE-CONTRACT.md](contracts/EXAMPLE-CONTRACT.md).
 
-## What this is for
+## What an agreed contract settles
 
-When a screen and the API behind it are built by different people — and, increasingly, by different
-agents — most defects are not bugs in anyone's code. They are mismatched expectations: a field one
-person assumed another would send, a state the design treated as derived and the backend treated as
-typed in, an error the client never knew could come back. That knowledge is tacit: it lives in a
-conversation, a design file or someone's head, and every new person or agent has to reconstruct it.
-
-A contract makes the one thing everyone depends on explicit and small: the wire shape. Once it is
-agreed, each party builds to the text, in parallel, without having to understand the others'
-requirements or reasons — the designer does not need to know the backend's rules, the backend does
-not need to know the design's, and an agent working for either needs only the file. When something
-is wrong, the contract says whose it is: a response that differs from the file is the server's
-defect, a request that differs is the client's, and a shape that turned out wrong is a change to
-the file — reviewed by the same people who agreed it.
-
-The approval mechanics exist so this scales past a few people in a room. Ownership names, per area,
-everyone who must agree; approval is a GitHub review tied to a specific commit; and a change after
-approval needs fresh approvals, automatically.
+Each party builds to the text, without the others' requirements or reasons: the designer does not
+need the backend's rules, the backend does not need the design's, and an agent working for either
+needs only the file. When something is wrong, the contract says whose it is: a response that
+differs from the file is the server's defect, a request that differs is the client's, and a shape
+that turned out wrong is a change to the file — reviewed by the same people who agreed it.
 
 ## Who agrees on what
 
