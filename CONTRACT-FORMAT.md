@@ -5,7 +5,8 @@ changes no endpoint has no contract.
 
 ## One file per endpoint
 
-`contracts/<area>/<verb>-<slug>.md` — for example `contracts/cases/post-certidoes.md`. The file holds
+`contracts/<sides>/<verb>-<slug>.md`, where `<sides>` names the two sides that meet on it — for example
+`contracts/frontoffice-backend/post-certidoes.md`. The file holds
 the endpoint's **current** full shape, as one block and nothing else:
 
 ````

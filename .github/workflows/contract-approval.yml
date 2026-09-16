@@ -61,9 +61,14 @@ jobs:
             // The owners this pull request needs: the union over every file it touches.
             const files = await github.paginate(github.rest.pulls.listFiles, { ...repo, pull_number: pr.number, per_page: 100 });
             const needed = new Map();
-            for (const f of files) for (const o of ownersOf(f.filename)) {
-              if (!needed.has(o)) needed.set(o, []);
-              needed.get(o).push(f.filename);
+            const unowned = [];
+            for (const f of files) {
+              const owners = ownersOf(f.filename);
+              if (owners.length === 0 && f.filename.startsWith('contracts/')) unowned.push(f.filename);
+              for (const o of owners) {
+                if (!needed.has(o)) needed.set(o, []);
+                needed.get(o).push(f.filename);
+              }
             }
 
             // Latest review per user decides; only APPROVED at the current head counts.
@@ -87,9 +92,12 @@ jobs:
             if (needed.has(author)) lines.push(`@${author} authored this pull request.`);
             if (missing.length) lines.push(`Not approved: ${missing.join('; ')}`);
             if (stale.length) lines.push(`Approved an earlier commit: ${stale.join('; ')}`);
+            if (unowned.length) lines.push(`No CODEOWNERS rule covers: ${unowned.join(', ')}`);
             core.summary.addRaw(lines.join('\n\n')).write();
 
-            if (missing.length || stale.length) {
+            if (unowned.length) {
+              core.setFailed('Every contract file must be covered by a CODEOWNERS rule.');
+            } else if (missing.length || stale.length) {
               core.setFailed('Every code owner of the touched files must approve the current head commit.');
             } else {
               core.info('All code owners of the touched files have approved the current head commit.');
