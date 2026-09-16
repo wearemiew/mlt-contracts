@@ -9,13 +9,10 @@ words, so a reader who has never seen the product can place it. The block is the
 
 ---
 
-Issues a certidão of one case item. The item must already be disclosed to the portal; certidões
-are issued by the case's management, in any phase.
+Issues a certidão of one case item. The item must already be disclosed to the portal.
 
 ```contract
 POST /companies/{companyId}/cases/{caseId}/certidoes
-who:  HrAdmin | CaseManager | SuperAdmin
-when: any
 req:
   itemId          uuid        required   a case item already disclosed to the portal
 201:
