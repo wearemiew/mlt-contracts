@@ -49,7 +49,7 @@ could see: the design files and a running prototype. By then both sides had buil
 
 ## Why
 
-Two causes, and between them they explain most of it.
+We see two causes, and between them they explain most of it.
 
 **Tacit knowledge.** A product is planned and built by four parties — product, design, frontend,
 backend — and in this project a fifth, the AI service. Each, with its agents, gathers the
@@ -70,24 +70,26 @@ gating nothing, because the derived side had nothing new to check; a panel showi
 guard named `checklistIncomplete` that never reads the checklist, shown to the user as "Requisitos
 da fase".
 
-Most of that knowledge is never written down. Among people who plan and build together it travels
-in conversation and memory, and it does not need writing while the same people do both. Nobody
-holds the whole of it, and there is no one place where the parts meet: what one party knows reaches
-the others only through what it wrote, and what it never wrote does not reach them at all.
+That knowledge is tacit. It cannot be written down in full, and trying to recreates the record
+described next: long documents nobody can keep true. Among people who plan and build together it
+does not need writing — it travels in conversation and memory, and it acts when one of them says
+"that is not how it works". Nobody holds the whole of it, and there is no one place where the parts
+meet: what each party knows shows only in what it can and cannot accept, and with agents doing the
+drafting, nobody was asked.
 
-**Maintainability — of the plan, not the code.** Where that knowledge was written, it was written
-into issues. One party's agent drafted them; the next party appended what it found missing;
+**Maintainability — of the plan, not the code.** Where that knowledge was written down anyway, it
+went into issues. One party's agent drafted them; the next party appended what it found missing;
 comments carried corrections; a later change edited some and not others. Each addition was cheap to
 make and none was ever consolidated, so the record grew by accretion — and nobody could say, of any
 point, which text was current, which contradicted which, or what had in fact been agreed. The cost
 of producing text fell; the cost of keeping it true did not.
 
 The map from causes to symptoms: the unreadable issues and the wrong base are the record grown by
-accretion; the gaps found downstream are knowledge each party had and never wrote. Both had a
+accretion; the gaps found downstream are knowledge each party had and was never asked for. Both had a
 second cost: because the shape of a seam existed nowhere until one side had built it, the other
 side either waited on that pull request to start or guessed and rebuilt, and nobody could say
-whose the mismatch was. Neither cause is fixed by reviewing harder. Review everything at every step and the speed is gone; review nothing
-and the first wrong assumption becomes the whole plan.
+whose the mismatch was. Neither cause is fixed by reviewing harder. Review everything at every
+step and the speed is gone; review nothing and the first wrong assumption becomes the whole plan.
 
 ## The proposal
 
@@ -95,8 +97,9 @@ Keep the agents in planning. Plan by agreeing the seams.
 
 At every point where one party's work becomes another's input — a screen and the endpoint behind
 it, a backend and the AI service it calls — the shape they meet on is written down in one small
-file before anyone builds across it. The file has named owners on each side, and they approve it in
-a pull request. A check enforces that every owner approved the exact version being merged; a change
+file before anyone builds across it. Negotiating it is where each side's knowledge acts: a shape
+one side cannot accept is objected to, and the reason need not be written. The file has named
+owners on each side, and they approve it in a pull request. A check enforces that every owner approved the exact version being merged; a change
 after approval needs fresh approval. That file is a **contract**, and a feature is planned when its
 contracts are agreed. This is contract-driven development (CDD) — contract as in agreement, not as
 in test suite: nothing runs against it but the review.
@@ -105,15 +108,16 @@ For the checklist above, the contract for the phase's read would have had to nam
 steps a person marks and the requirements the server derives — and which of them gates the exit
 would have been a question asked before either was built, not a comment found after.
 
-What this changes for the people who plan:
+What this would change for the people who plan:
 
 - **You approve a page, not an issue.** A contract is the size a person reads in a minute and can
   say is right or wrong. Issues keep being written, with agents, at whatever length; they stop being
   where agreement happens.
-- **The dispersed knowledge converges in one file.** Each party writes into the contract what only
-  it knows about the seam, and the file is the one representation all of them agree on. Nothing else
-  needs sharing: the designer does not need the backend's rules, the backend does not need the
-  design's, and an agent working for either needs only the file.
+- **Tacit knowledge stays tacit; the contract represents it.** Nobody writes down what they know.
+  Each party reads the proposed shape against what it knows and accepts or objects, and the file
+  records only the outcome: the shape all of them could accept. Nothing else needs sharing: the
+  designer does not need the backend's rules, the backend does not need the design's, and an agent
+  working for either needs only the file.
 - **A wrong assumption is found where two sides disagree, not where one side finishes.** Agreeing
   on a shape makes each side say what it assumes, and the shape either side cannot accept is the
   planning conversation, held before anything is built on it.
@@ -134,7 +138,7 @@ named owners, approval at a commit — serve anything two parties must agree on 
 shared types, events a server pushes (SSE, SignalR), messages it sends (email, notifications). They
 are added as the need appears.
 
-This does not make issues readable, and it does not replace design. It settles the seams;
+This would not make issues readable, and it does not replace design. It settles the seams;
 everything on one side of a seam is still that party's to plan as it likes.
 
 The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
