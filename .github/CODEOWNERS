@@ -1,6 +1,8 @@
 # Who must approve a contract. One rule per area, naming everyone who must agree on its contracts —
 # server, client, design, tech lead, as many as it takes; last matching rule wins. The contract-approval workflow resolves owners per file and requires every owner of
 # every file the pull request touches. A contract file matched by no rule fails the check.
+# Owners are individual logins: the workflow matches each owner against review logins and does not
+# expand a team, so an area that names @org/team can never be approved.
 
 contracts/portal-backend/**        @pauloedspinho20 @NunoSilvaMiew @henriq350
 contracts/portal-ai/**             @pauloedspinho20 @NunoSilvaMiew

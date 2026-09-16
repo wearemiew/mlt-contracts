@@ -129,8 +129,8 @@ What this would change for the people who plan:
   on a shape makes each side say what it assumes, and the shape either side cannot accept is the
   planning conversation, held before anything is built on it.
 - **The file stays true because it is the only place the shape lives.** A change is a pull request
-  to the same file, reviewed by the same people; the diff is the delta. Removing an endpoint is
-  deleting its file.
+  to the same file, reviewed by the same people, opened by the party whose knowledge was missing;
+  the diff is the delta. Removing an endpoint is deleting its file.
 - **Nobody waits on another side's pull request.** Once the file is agreed, each side builds
   against it — the screen against the shape, not the running backend; the backend against the
   shape, not the screen — and the dependency is on the file, which exists first.
@@ -167,14 +167,42 @@ contract file under `contracts/` that no rule covers fails the check — the fol
 
 ## How a contract is agreed
 
-1. Open a pull request that adds or changes one file under `contracts/`.
+1. **Open a pull request for the smallest set of files closed under type references.** A file that
+   names a type another file owns depends on that file; the two travel together. Files that share
+   no type share no pull request and never wait on each other. One feature usually yields a few:
+   the group around one aggregate's types, the group around another's, a read that references
+   nothing. Neither one-file-per-request nor one-request-per-feature is the unit — the first
+   collides when two parties contract the same endpoint at once, the second serialises every party
+   onto one moving head, where each push resets everyone else's approval. A type that turns out to
+   be needed by two groups is a dependency just found: extract it into its own small pull request,
+   agreed first, rather than merging the groups.
 2. The owners of the files it touches review it. Ownership is per area, in
    [`.github/CODEOWNERS`](.github/CODEOWNERS), last matching rule wins — an area names as many
-   people as must agree on its contracts, and different areas name different people.
+   people as must agree on its contracts, and different areas name different people. Every area
+   also names **one reviewer outside its parties** — a tech lead — because acceptability across
+   parties is not correctness: three sides can each accept a shape that is wrong against the
+   domain, and someone has to read it against the domain rather than against their own side.
 3. The **contract-approval** check passes when every owner of every touched file has approved **the
    current head commit** — or authored the pull request. An approval given to an earlier commit does
-   not count: a new push means a fresh approval.
-4. Merge. The file on `main` is the agreed shape; every implementation points at it.
+   not count: a new push means a fresh approval. Because the author counts as approved on every
+   file in the request, **who opens it decides whose approval is implied**: a party opening a
+   request silently satisfies its own side, including on files it did not write. The outside
+   reviewer opens contract pull requests by default, so every party must approve.
+4. Merge. The file on `main` is the agreed shape; every implementation points at it. When the check
+   cannot run — a private repository whose Actions are unpaid, a runner that never started — a red
+   check is not a verdict: the person merging reads the approvals at the head by hand and says so
+   in the merge commit.
 
-A later change to an endpoint is a new pull request to the same file. The diff is the delta.
-Removing an endpoint is deleting its file.
+**A change after agreement is owed by the party whose knowledge was missing.** The server refuses
+something no error line listed — the server side's amendment. A screen needs a field it never
+asked for — the client side's. A drawn state that no field expresses — the design's. That party
+opens the pull request to the same file and says, in its body, what it did not know or did not
+look for. Finding it late does not move it: the record of what was missed is the point — it is the
+tacit knowledge the file exists to represent, written down at the moment it stopped being tacit.
+The diff is the delta. Removing an endpoint is deleting its file.
+
+**Endpoint shapes in issues are sketches.** An issue may carry a request and response to make its
+ask concrete; the contract round exists to test that sketch against what each party knows, and a
+contract departs from it wherever a party's knowledge says so — a field moved into the kind it
+belongs to, a status dropped because the write does not move the aggregate, a clock anchored on a
+different rule. An issue is updated to match an agreed contract, never the reverse.
