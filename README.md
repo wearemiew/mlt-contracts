@@ -1,28 +1,27 @@
 # Contracts
 
-On one product we planned with agents in every step, and the mistakes that cost most were the ones
-no step could see — one word that meant one thing to the lawyers, another on the screen and two
-things in the model, found after both sides had built.
-
-This is a proposal for **contract-driven development (CDD)**: a way to plan. At every point where
-one team's work becomes another's input, the shape they meet on is negotiated and agreed in one
-small file, by named people, before anyone builds across it. Agreeing those files is not a step
-added to planning; it is most of what planning is — and it is the part agents can be brought into
-at scale, because a file is what an agent can read, draft, and be held to.
-
-**The goal** is to bring agents into the planning of a team project in a way that stays
-maintainable and scales: the agreements a person can read in a minute and an agent can be held to,
-kept in one place with named owners, so that adding people or agents adds speed and not confusion,
-and so that each side knows what it owes the others and can build without waiting for them. It is
-set up for one project; nothing in the mechanics is specific to it.
+A proposal for contract-driven development (CDD): a way to bring agents into the planning of a
+team project that stays maintainable and scales.
 
 ## The shift
 
 Agents have reorganised how code is written. A developer working with one produces more, faster,
 and that is not in question. The next step, which every team is taking, is to bring them into
 planning: learning the rules the product must follow and the people who will use it, writing
-requirements, specs and issues. There is no settled practice for that. Each team is finding out,
-and this document is what one team found.
+requirements, specs and issues. There is no settled practice for that. Each team is finding out;
+this document is one team's proposal, from one product it planned that way.
+
+## In short
+
+On one product we planned with agents in every step, and the mistakes that cost most were the ones
+no step could see — one word that meant one thing to the lawyers, another on the screen and two
+things in the model, found after both sides had built. The proposal: at every point where one
+team's work becomes another's input, the shape they meet on is negotiated and agreed in one small
+file, by named people, before anyone builds across it. Agreeing those files is most of what
+planning is, and it is the part agents can be brought into at scale — an agent reads and drafts
+the file; a person signs it and answers for it. Each side then knows what it owes the others and
+builds without waiting for them. It is set up for one project; nothing in the mechanics is specific
+to it.
 
 ## What happened
 
