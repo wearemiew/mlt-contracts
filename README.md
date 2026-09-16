@@ -19,14 +19,14 @@ faster and larger for it.
 
 Three things went wrong.
 
-**The issues were hard to read.** Written with agents, they were long, uniform in tone and generic
-where they should have been specific. The person receiving one could not tell in a minute what it
-asked for, what it assumed, or whether it was right — so they were reviewed the way long text is
-reviewed: skimmed and accepted.
+**The issues were hard to read.** Written with agents, they were confusing: disorganised, poorly
+presented, and low in information for their length, with what mattered scattered across sections
+that did not build on one another. The person receiving one could not tell in a minute what it
+asked for, what it assumed, or whether it was right.
 
 **The gaps surfaced downstream, one at a time.** Each step checked only against the one before. A
-field the screen assumed and the API never sent, a state the design treated as derived and the
-backend treated as typed in, an error the client never expected — each showed up as a comment on a
+field the screen assumed and the API never sent, a state one side treated as derived and the
+other as typed in, an error the client never expected — each showed up as a comment on a
 task, found by whoever was working it.
 
 **The base was wrong.** The design the whole chain rested on had errors no step could detect,
@@ -38,22 +38,36 @@ sides had built.
 
 Two causes, and between them they explain most of it.
 
-**Tacit knowledge.** A product is planned and built by several parties — product, design,
-engineering — and most of what each party knows is never written down. Product knows what a feature
-is for; design knows what a screen shows and assumes; engineering knows what the model records and
-what it derives. Among people who plan and build together, that knowledge travels in conversation
-and memory, and it does not need writing while the same people do both. An agent holds none of it.
-It works from the context it is given — one party's — and what that party never wrote is not in it.
-Two people on a team share more than their documents; two agents share only the documents. Every
-gap above is a piece of knowledge one party had, never wrote, and an agent working for another party
-built without.
+**Tacit knowledge.** A product is planned and built by four parties — product, design, frontend,
+backend — and each, with its agents, gathers the requirements of its own domain and comes to know
+what the others do not. Take one thing: the checklist of a phase. Product knows the practice — the
+firm works each phase from a list of steps, so that none is skipped: the facts recorded, competence
+checked, an instructor appointed, the deadline under control. Design knows the screen — a
+"Checklist da fase" panel with the steps and a count of how many are done. Frontend knows what the
+panel needs from the API: whether a step is a tick the user makes or a state the server reports,
+what "por rever" (pending review) means, and which message to show when the phase is blocked.
+Backend knows the model — some steps are facts it can derive, and those gate the transition; others
+are only a person's say-so, and a manual tick must never gate a legal step; so it keeps two things
+under the one word, a derived set that blocks and a manual list that does not.
 
-**Maintainability.** What agents do write is cheap to produce and expensive to keep. An issue
-written in an hour takes longer than that to read properly, and a hundred of them cannot be read
-properly at all: nobody can say which are current, which contradict each other, or which a later
-change made wrong. The cost of producing a document fell; the cost of checking one, and of keeping
-it true, did not. So the documents carrying the plan were the ones least able to be maintained — and
-an assumption wrong at the base was elaborated by every step and caught by none.
+Four true statements about one seam, none of them wrong. What came out of them: an issue that asked
+for checklist items computable from the data, with the exit guard wired to them; a manual list,
+gating nothing, because the derived side had nothing new to check; a panel showing "0 de 2"; and a
+guard named `checklistIncomplete` that never reads the checklist, shown to the user as "Requisitos
+da fase".
+
+Most of that knowledge is never written down. Among people who plan and build together it travels
+in conversation and memory, and it does not need writing while the same people do both. Nobody
+holds the whole of it, and there is no one place where the parts meet: what one party knows reaches
+the others only through what it wrote, and what it never wrote does not reach them at all.
+
+**Maintainability.** Where that knowledge was written, it was written into issues. One party's
+agent drafted them; the next party appended what it found missing; comments carried corrections; a
+later change edited some and not others. Each addition was cheap to make and none was ever
+consolidated, so the record grew by accretion — and nobody could say, of any point, which text was
+current, which contradicted which, or what had in fact been agreed. The cost of producing text
+fell; the cost of keeping it true did not. An assumption wrong at the base was elaborated by every
+step and caught by none.
 
 Neither cause is fixed by reviewing harder. Review everything and the speed is gone; review nothing
 and the first wrong assumption becomes the whole plan.
@@ -75,9 +89,10 @@ What this changes for the people who plan:
 - **You approve a page, not an issue.** A contract is the size a person reads in a minute and can
   say is right or wrong. Issues keep being written, with agents, at whatever length; they stop being
   where agreement happens.
-- **Tacit knowledge is written once, at the seam**, by the party that has it, and the other party
-  reads it there. Nothing else needs sharing: the designer does not need the backend's rules, the
-  backend does not need the design's, and an agent working for either needs only the file.
+- **The dispersed knowledge converges in one file.** Each party writes into the contract what only
+  it knows about the seam, and the file is the one representation all of them agree on. Nothing else
+  needs sharing: the designer does not need the backend's rules, the backend does not need the
+  design's, and an agent working for either needs only the file.
 - **A wrong base shows at the first contract, not the last task.** Agreeing on a shape makes each
   side say what it assumes, and an assumption the two sides do not share is found before either
   builds.
