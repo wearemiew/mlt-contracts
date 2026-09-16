@@ -1,0 +1,63 @@
+name: contract-approval
+
+# Passes when every code owner has approved the pull request's current head commit, or authored the
+# pull request. An approval given to an earlier commit does not count, so any new push needs fresh
+# approvals. Re-runs on every push and every review.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const pr = context.payload.pull_request;
+            const head = pr.head.sha;
+
+            // The owners are the handles on the first rule line of CODEOWNERS.
+            const rule = fs.readFileSync('.github/CODEOWNERS', 'utf8')
+              .split('\n').map(l => l.trim()).find(l => l && !l.startsWith('#'));
+            const owners = rule.split(/\s+/).slice(1).map(h => h.replace(/^@/, '').toLowerCase());
+
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.number, per_page: 100,
+            });
+
+            // Latest review per user decides; only APPROVED at the current head counts.
+            const latest = new Map();
+            for (const r of reviews) {
+              if (r.state === 'COMMENTED') continue;
+              latest.set(r.user.login.toLowerCase(), r);
+            }
+
+            const author = pr.user.login.toLowerCase();
+            const missing = [], stale = [];
+            for (const owner of owners) {
+              if (owner === author) continue;
+              const r = latest.get(owner);
+              if (!r || r.state !== 'APPROVED') missing.push(owner);
+              else if (r.commit_id !== head) stale.push(`${owner} (approved ${r.commit_id.slice(0, 7)}, head is ${head.slice(0, 7)})`);
+            }
+
+            const lines = [`Head: ${head.slice(0, 7)}`, `Owners: ${owners.map(o => '@' + o).join(' ')}`];
+            if (owners.includes(author)) lines.push(`@${author} authored this pull request.`);
+            if (missing.length) lines.push(`Not approved: ${missing.map(o => '@' + o).join(' ')}`);
+            if (stale.length) lines.push(`Approved an earlier commit: ${stale.join('; ')}`);
+            core.summary.addRaw(lines.join('\n\n')).write();
+
+            if (missing.length || stale.length) {
+              core.setFailed('Every code owner must approve the current head commit.');
+            } else {
+              core.info('All code owners have approved the current head commit.');
+            }
