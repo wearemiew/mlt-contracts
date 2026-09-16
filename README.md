@@ -2,10 +2,19 @@
 
 On one product we planned with agents in every step, and the mistakes that cost most were the ones
 no step could see — one word that meant one thing to the lawyers, another on the screen and two
-things in the model, found after both sides had built. This proposes one change to what planning
-produces: at every point where one team's work becomes another's input, one small file, agreed by
-named people, before anyone builds across it. It is set up for one project; nothing in the
-mechanics is specific to it.
+things in the model, found after both sides had built.
+
+This is a proposal for **contract-driven development (CDD)**: a way to plan. At every point where
+one team's work becomes another's input, the shape they meet on is negotiated and agreed in one
+small file, by named people, before anyone builds across it. Agreeing those files is not a step
+added to planning; it is most of what planning is — and it is the part agents can be brought into
+at scale, because a file is what an agent can read, draft, and be held to.
+
+**The goal** is to bring agents into the planning of a team project in a way that stays
+maintainable and scales: the agreements a person can read in a minute and an agent can be held to,
+kept in one place with named owners, so that adding people or agents adds speed and not confusion,
+and so that each side knows what it owes the others and can build without waiting for them. It is
+set up for one project; nothing in the mechanics is specific to it.
 
 ## The shift
 
@@ -75,13 +84,15 @@ point, which text was current, which contradicted which, or what had in fact bee
 of producing text fell; the cost of keeping it true did not.
 
 The map from causes to symptoms: the unreadable issues and the wrong base are the record grown by
-accretion; the gaps found downstream are knowledge each party had and never wrote. Neither cause is
-fixed by reviewing harder. Review everything at every step and the speed is gone; review nothing
+accretion; the gaps found downstream are knowledge each party had and never wrote. Both had a
+second cost: because the shape of a seam existed nowhere until one side had built it, the other
+side either waited on that pull request to start or guessed and rebuilt, and nobody could say
+whose the mismatch was. Neither cause is fixed by reviewing harder. Review everything at every step and the speed is gone; review nothing
 and the first wrong assumption becomes the whole plan.
 
 ## The proposal
 
-Keep the agents in planning. Change what planning has to produce.
+Keep the agents in planning. Plan by agreeing the seams.
 
 At every point where one party's work becomes another's input — a screen and the endpoint behind
 it, a backend and the AI service it calls — the shape they meet on is written down in one small
@@ -110,6 +121,9 @@ What this changes for the people who plan:
 - **The file stays true because it is the only place the shape lives.** A change is a pull request
   to the same file, reviewed by the same people; the diff is the delta. Removing an endpoint is
   deleting its file.
+- **Nobody waits on another side's pull request.** Once the file is agreed, each side builds
+  against it — the screen against the shape, not the running backend; the backend against the
+  shape, not the screen — and the dependency is on the file, which exists first.
 - **When something is wrong, the file says whose it is.** A response that differs from the file is
   the server's defect; a request that differs is the client's; a shape that turned out wrong is a
   change to the file.
