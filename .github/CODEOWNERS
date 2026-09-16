@@ -1,5 +1,5 @@
-# Who must approve a contract. One rule per pair of sides that meet on an endpoint; last matching
-# rule wins. The contract-approval workflow resolves owners per file and requires every owner of
+# Who must approve a contract. One rule per area, naming everyone who must agree on its contracts —
+# server, client, design, tech lead, as many as it takes; last matching rule wins. The contract-approval workflow resolves owners per file and requires every owner of
 # every file the pull request touches. A contract file matched by no rule fails the check.
 
 contracts/portal-backend/**        @pauloedspinho20 @nunosilva @henriq350

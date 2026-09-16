@@ -2,8 +2,8 @@ name: contract-approval
 
 # Passes when every code owner of every file the pull request touches has approved its current head
 # commit, or authored the pull request. Owners come from .github/CODEOWNERS, resolved per file the way
-# GitHub does (last matching rule wins), so one contract can need one pair of people and another a
-# different pair. An approval given to an earlier commit does not count: a new push needs fresh
+# GitHub does (last matching rule wins), so one area's contracts can need one set of people and
+# another area's a different set. An approval given to an earlier commit does not count: a new push needs fresh
 # approvals. Re-runs on every push and every review.
 on:
   pull_request:

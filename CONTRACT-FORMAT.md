@@ -1,11 +1,11 @@
 # Contract format
 
-A contract is the wire shape of one endpoint. It exists only where two sides meet: work that adds or
+A contract is the wire shape of one endpoint. It exists only where more than one party must agree: work that adds or
 changes no endpoint has no contract.
 
 ## One file per endpoint
 
-`contracts/<sides>/<verb>-<slug>.md`, where `<sides>` names the two sides that meet on it — for example
+`contracts/<area>/<verb>-<slug>.md`, where `<area>` is a CODEOWNERS area — the people who must agree — for example
 `contracts/frontoffice-backend/post-certidoes.md`. The file holds the endpoint's **current** full
 shape as one block, optionally preceded by a sentence or two saying what the endpoint is for — see
 [EXAMPLE-CONTRACT.md](EXAMPLE-CONTRACT.md):
