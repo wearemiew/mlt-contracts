@@ -1,14 +1,19 @@
 # Contracts
 
-A proposal for planning software with agents, in use on one project. It asks one thing of the
-people who plan: agree on the seams before anyone builds across them.
+On one product we planned with agents in every step, and the mistakes that cost most were the ones
+no step could see — one word that meant one thing to the lawyers, another on the screen and two
+things in the model, found after both sides had built. This proposes one change to what planning
+produces: at every point where one team's work becomes another's input, one small file, agreed by
+named people, before anyone builds across it. It is set up for one project; nothing in the
+mechanics is specific to it.
 
-## Where we are
+## The shift
 
 Agents have reorganised how code is written. A developer working with one produces more, faster,
 and that is not in question. The next step, which every team is taking, is to bring them into
-planning: reading sources and interviews, writing requirements, specs and issues. There is no
-settled practice for that. Each team is finding out, and this document is what one team found.
+planning: learning the rules the product must follow and the people who will use it, writing
+requirements, specs and issues. There is no settled practice for that. Each team is finding out,
+and this document is what one team found.
 
 ## What happened
 
@@ -25,30 +30,31 @@ that did not build on one another. The person receiving one could not tell in a 
 asked for, what it assumed, or whether it was right.
 
 **The gaps surfaced downstream, one at a time.** Each step checked only against the one before. A
-field the screen assumed and the API never sent, a state one side treated as derived and the
-other as typed in, an error the client never expected — each showed up as a comment on a
-task, found by whoever was working it.
+field the screen assumed and the API never sent, a state one side treated as derived and the other
+as typed in, an error the client never expected — each showed up as a comment on a task, found by
+whoever was working it.
 
-**The base was wrong.** The design the whole chain rested on had errors no step could detect,
-because every step took the previous one as given. They became visible when the specified system
-was put next to what everyone could see: the design files and a running prototype. By then both
-sides had built.
+**The base was wrong.** The model the requirements assumed — what the system records, what it
+derives, which step gates which — had errors no step could detect, because every step took the
+previous one as given. They became visible when the specified system was put next to what everyone
+could see: the design files and a running prototype. By then both sides had built.
 
 ## Why
 
 Two causes, and between them they explain most of it.
 
 **Tacit knowledge.** A product is planned and built by four parties — product, design, frontend,
-backend — and each, with its agents, gathers the requirements of its own domain and comes to know
-what the others do not. Take one thing: the checklist of a phase. Product knows the practice — the
-firm works each phase from a list of steps, so that none is skipped: the facts recorded, competence
-checked, an instructor appointed, the deadline under control. Design knows the screen — a
-"Checklist da fase" panel with the steps and a count of how many are done. Frontend knows what the
-panel needs from the API: whether a step is a tick the user makes or a state the server reports,
-what "por rever" (pending review) means, and which message to show when the phase is blocked.
-Backend knows the model — some steps are facts it can derive, and those gate the transition; others
-are only a person's say-so, and a manual tick must never gate a legal step; so it keeps two things
-under the one word, a derived set that blocks and a manual list that does not.
+backend — and in this project a fifth, the AI service. Each, with its agents, gathers the
+requirements of its own domain and comes to know what the others do not. Take one thing: the
+checklist of a phase. Product knows the practice — the firm works each phase from a list of steps,
+so that none is skipped: the facts recorded, competence checked, an instructor appointed, the
+deadline under control. Design knows the screen — a "Checklist da fase" panel with the steps and a
+count of how many are done. Frontend knows what the panel needs from the API: whether a step is a
+tick the user makes or a state the server reports, what "por rever" (pending review) means, and
+which message to show when the phase is blocked. Backend knows the model — some steps are facts it
+can derive, and those gate the transition; others are only a person's say-so, and a manual tick
+must never gate a legal step; so it keeps two things under the one word, a derived set that blocks
+and a manual list that does not.
 
 Four true statements about one seam, none of them wrong. What came out of them: an issue that asked
 for checklist items computable from the data, with the exit guard wired to them; a manual list,
@@ -61,15 +67,16 @@ in conversation and memory, and it does not need writing while the same people d
 holds the whole of it, and there is no one place where the parts meet: what one party knows reaches
 the others only through what it wrote, and what it never wrote does not reach them at all.
 
-**Maintainability.** Where that knowledge was written, it was written into issues. One party's
-agent drafted them; the next party appended what it found missing; comments carried corrections; a
-later change edited some and not others. Each addition was cheap to make and none was ever
-consolidated, so the record grew by accretion — and nobody could say, of any point, which text was
-current, which contradicted which, or what had in fact been agreed. The cost of producing text
-fell; the cost of keeping it true did not. An assumption wrong at the base was elaborated by every
-step and caught by none.
+**Maintainability — of the plan, not the code.** Where that knowledge was written, it was written
+into issues. One party's agent drafted them; the next party appended what it found missing;
+comments carried corrections; a later change edited some and not others. Each addition was cheap to
+make and none was ever consolidated, so the record grew by accretion — and nobody could say, of any
+point, which text was current, which contradicted which, or what had in fact been agreed. The cost
+of producing text fell; the cost of keeping it true did not.
 
-Neither cause is fixed by reviewing harder. Review everything and the speed is gone; review nothing
+The map from causes to symptoms: the unreadable issues and the wrong base are the record grown by
+accretion; the gaps found downstream are knowledge each party had and never wrote. Neither cause is
+fixed by reviewing harder. Review everything at every step and the speed is gone; review nothing
 and the first wrong assumption becomes the whole plan.
 
 ## The proposal
@@ -78,11 +85,15 @@ Keep the agents in planning. Change what planning has to produce.
 
 At every point where one party's work becomes another's input — a screen and the endpoint behind
 it, a backend and the AI service it calls — the shape they meet on is written down in one small
-file before anyone builds across it. The file has named owners on each side; they approve it in a
-pull request; a check enforces that every owner approved the exact version being merged, and a
-change after approval needs fresh approval. That file is a **contract**, and a feature is planned
-when its contracts are agreed. This is contract-driven development (CDD) — contract as in
-agreement, not as in test suite: nothing runs against it but the review.
+file before anyone builds across it. The file has named owners on each side, and they approve it in
+a pull request. A check enforces that every owner approved the exact version being merged; a change
+after approval needs fresh approval. That file is a **contract**, and a feature is planned when its
+contracts are agreed. This is contract-driven development (CDD) — contract as in agreement, not as
+in test suite: nothing runs against it but the review.
+
+For the checklist above, the contract for the phase's read would have had to name two lists — the
+steps a person marks and the requirements the server derives — and which of them gates the exit
+would have been a question asked before either was built, not a comment found after.
 
 What this changes for the people who plan:
 
@@ -93,9 +104,9 @@ What this changes for the people who plan:
   it knows about the seam, and the file is the one representation all of them agree on. Nothing else
   needs sharing: the designer does not need the backend's rules, the backend does not need the
   design's, and an agent working for either needs only the file.
-- **A wrong base shows at the first contract, not the last task.** Agreeing on a shape makes each
-  side say what it assumes, and an assumption the two sides do not share is found before either
-  builds.
+- **A wrong assumption is found where two sides disagree, not where one side finishes.** Agreeing
+  on a shape makes each side say what it assumes, and the shape either side cannot accept is the
+  planning conversation, held before anything is built on it.
 - **The file stays true because it is the only place the shape lives.** A change is a pull request
   to the same file, reviewed by the same people; the diff is the delta. Removing an endpoint is
   deleting its file.
@@ -122,9 +133,9 @@ The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
 
 | Area | Must agree |
 |---|---|
-| `contracts/portal-backend/` | @pauloedspinho20 · @nunosilva · @henriq350 |
-| `contracts/portal-ai/` | @pauloedspinho20 · @nunosilva |
-| `contracts/backend-ai/` | @nunosilva · @henriq350 |
+| `contracts/portal-backend/` | @pauloedspinho20 · @NunoSilvaMiew · @henriq350 |
+| `contracts/portal-ai/` | @pauloedspinho20 · @NunoSilvaMiew |
+| `contracts/backend-ai/` | @NunoSilvaMiew · @henriq350 |
 | `contracts/frontoffice-backend/` | @pauloedspinho20 · @henriq350 |
 
 To add an area: one line in CODEOWNERS with its path and everyone who must agree, and a row here. A
