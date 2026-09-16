@@ -1,7 +1,9 @@
 name: contract-approval
 
-# Passes when every code owner has approved the pull request's current head commit, or authored the
-# pull request. An approval given to an earlier commit does not count, so any new push needs fresh
+# Passes when every code owner of every file the pull request touches has approved its current head
+# commit, or authored the pull request. Owners come from .github/CODEOWNERS, resolved per file the way
+# GitHub does (last matching rule wins), so one contract can need one pair of people and another a
+# different pair. An approval given to an earlier commit does not count: a new push needs fresh
 # approvals. Re-runs on every push and every review.
 on:
   pull_request:
@@ -24,17 +26,48 @@ jobs:
             const fs = require('fs');
             const pr = context.payload.pull_request;
             const head = pr.head.sha;
+            const repo = { owner: context.repo.owner, repo: context.repo.repo };
 
-            // The owners are the handles on the first rule line of CODEOWNERS.
-            const rule = fs.readFileSync('.github/CODEOWNERS', 'utf8')
-              .split('\n').map(l => l.trim()).find(l => l && !l.startsWith('#'));
-            const owners = rule.split(/\s+/).slice(1).map(h => h.replace(/^@/, '').toLowerCase());
+            // CODEOWNERS: gitignore-style patterns, last matching rule wins.
+            function toRegex(pattern) {
+              let p = pattern.trim();
+              const anchored = p.startsWith('/');
+              if (anchored) p = p.slice(1);
+              if (p.endsWith('/')) p = p.slice(0, -1);
+              const hasSlash = p.includes('/');
+              let re = '';
+              for (let i = 0; i < p.length; i++) {
+                const c = p[i];
+                if (c === '*') {
+                  if (p[i + 1] === '*') { re += '.*'; i++; if (p[i + 1] === '/') i++; }
+                  else re += '[^/]*';
+                } else if (c === '?') {
+                  re += '[^/]';
+                } else {
+                  re += c.replace(/[.+^$(){}|[\]\\]/, '\\$&');
+                }
+              }
+              return new RegExp(((anchored || hasSlash) ? '^' : '(^|/)') + re + '(/.*)?$');
+            }
+            const rules = fs.readFileSync('.github/CODEOWNERS', 'utf8')
+              .split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#'))
+              .map(l => { const [pat, ...o] = l.split(/\s+/); return { re: toRegex(pat), owners: o.map(x => x.replace(/^@/, '').toLowerCase()) }; });
+            function ownersOf(file) {
+              let hit = null;
+              for (const r of rules) if (r.re.test(file)) hit = r;
+              return hit ? hit.owners : [];
+            }
 
-            const reviews = await github.paginate(github.rest.pulls.listReviews, {
-              owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.number, per_page: 100,
-            });
+            // The owners this pull request needs: the union over every file it touches.
+            const files = await github.paginate(github.rest.pulls.listFiles, { ...repo, pull_number: pr.number, per_page: 100 });
+            const needed = new Map();
+            for (const f of files) for (const o of ownersOf(f.filename)) {
+              if (!needed.has(o)) needed.set(o, []);
+              needed.get(o).push(f.filename);
+            }
 
             // Latest review per user decides; only APPROVED at the current head counts.
+            const reviews = await github.paginate(github.rest.pulls.listReviews, { ...repo, pull_number: pr.number, per_page: 100 });
             const latest = new Map();
             for (const r of reviews) {
               if (r.state === 'COMMENTED') continue;
@@ -43,21 +76,21 @@ jobs:
 
             const author = pr.user.login.toLowerCase();
             const missing = [], stale = [];
-            for (const owner of owners) {
+            for (const [owner, ownedFiles] of needed) {
               if (owner === author) continue;
               const r = latest.get(owner);
-              if (!r || r.state !== 'APPROVED') missing.push(owner);
-              else if (r.commit_id !== head) stale.push(`${owner} (approved ${r.commit_id.slice(0, 7)}, head is ${head.slice(0, 7)})`);
+              if (!r || r.state !== 'APPROVED') missing.push(`@${owner} (${ownedFiles.join(', ')})`);
+              else if (r.commit_id !== head) stale.push(`@${owner} approved ${r.commit_id.slice(0, 7)}, head is ${head.slice(0, 7)}`);
             }
 
-            const lines = [`Head: ${head.slice(0, 7)}`, `Owners: ${owners.map(o => '@' + o).join(' ')}`];
-            if (owners.includes(author)) lines.push(`@${author} authored this pull request.`);
-            if (missing.length) lines.push(`Not approved: ${missing.map(o => '@' + o).join(' ')}`);
+            const lines = [`Head: ${head.slice(0, 7)}`, `Owners for the files touched: ${[...needed.keys()].map(o => '@' + o).join(' ') || 'none'}`];
+            if (needed.has(author)) lines.push(`@${author} authored this pull request.`);
+            if (missing.length) lines.push(`Not approved: ${missing.join('; ')}`);
             if (stale.length) lines.push(`Approved an earlier commit: ${stale.join('; ')}`);
             core.summary.addRaw(lines.join('\n\n')).write();
 
             if (missing.length || stale.length) {
-              core.setFailed('Every code owner must approve the current head commit.');
+              core.setFailed('Every code owner of the touched files must approve the current head commit.');
             } else {
-              core.info('All code owners have approved the current head commit.');
+              core.info('All code owners of the touched files have approved the current head commit.');
             }

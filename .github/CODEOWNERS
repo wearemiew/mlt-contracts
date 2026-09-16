@@ -1,2 +1,7 @@
-# Every contract needs both sides' approval. The contract-approval workflow reads this line.
-*   @henriq350 @pauloedspinho20
+# Who must approve a contract. Path rules, last match wins — the contract-approval workflow resolves
+# owners per file the same way GitHub does, so different areas can name different people.
+*                       @henriq350 @pauloedspinho20
+
+# Examples of per-area ownership, to uncomment as areas appear:
+# contracts/ai/**       @henriq350 @nunosilva
+# contracts/portal/**   @pauloedspinho20 @henriq350
