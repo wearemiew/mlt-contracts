@@ -33,6 +33,20 @@ The approval mechanics exist so this scales past a few people in a room. Ownersh
 everyone who must agree; approval is a GitHub review tied to a specific commit; and a change after
 approval needs fresh approvals, automatically.
 
+## Who agrees on what
+
+[`.github/CODEOWNERS`](.github/CODEOWNERS) is the authority; this table mirrors it.
+
+| Area | Must agree |
+|---|---|
+| `contracts/portal-backend/` | @pauloedspinho20 · @nunosilva · @henriq350 |
+| `contracts/portal-ai/` | @pauloedspinho20 · @nunosilva |
+| `contracts/backend-ai/` | @nunosilva · @henriq350 |
+| `contracts/frontoffice-backend/` | @pauloedspinho20 · @henriq350 |
+
+To add an area: one line in CODEOWNERS with its path and everyone who must agree, and a row here. A
+contract file under `contracts/` that no rule covers fails the check — the folder is the decision.
+
 ## How a contract is agreed
 
 1. Open a pull request that adds or changes one file under `contracts/`.
