@@ -1,8 +1,9 @@
 # Contracts
 
-The wire shape of every endpoint the MyLegalTeam frontend and backend meet on. One file per
-endpoint, under `contracts/`. The file is the agreement: the backend serves exactly what it says,
-the frontend consumes exactly what it says, and neither side needs the other's reasons.
+The wire shape of every endpoint two sides meet on — the side that serves it and the side that
+consumes it. One file per endpoint, under `contracts/`. The file is the agreement: the server side
+builds exactly what it says, the client side consumes exactly what it says, and neither needs the
+other's reasons.
 
 The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md).
 
