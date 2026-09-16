@@ -77,6 +77,12 @@ does not need writing — it travels in conversation and memory, and it acts whe
 meet: what each party knows shows only in what it can and cannot accept, and with agents doing the
 drafting, nobody was asked.
 
+Agents add a second layer of it. Much of what a person knows is told to their agent — in a session,
+as corrections, as decisions taken along the way — and it lives in that conversation. An agent's
+context is tacit knowledge too: it belongs to one party, it is not a document, it does not survive
+the session, and it does not cross to another party's agent. Exporting it does not help; a context
+written out is the same long text nobody can keep true.
+
 **Maintainability — of the plan, not the code.** Where that knowledge was written down anyway, it
 went into issues. One party's agent drafted them; the next party appended what it found missing;
 comments carried corrections; a later change edited some and not others. Each addition was cheap to
@@ -113,9 +119,10 @@ What this would change for the people who plan:
 - **You approve a page, not an issue.** A contract is the size a person reads in a minute and can
   say is right or wrong. Issues keep being written, with agents, at whatever length; they stop being
   where agreement happens.
-- **Tacit knowledge stays tacit; the contract represents it.** Nobody writes down what they know.
-  Each party reads the proposed shape against what it knows and accepts or objects, and the file
-  records only the outcome: the shape all of them could accept. Nothing else needs sharing: the
+- **Tacit knowledge stays tacit; the contract represents it.** Nobody is made to write down what
+  they know. Each party — the person, and the agent from the context it holds — reads the proposed
+  shape against what it knows and accepts or objects, and the file records only the outcome: the
+  shape all of them could accept. Nothing else needs sharing: the
   designer does not need the backend's rules, the backend does not need the design's, and an agent
   working for either needs only the file.
 - **A wrong assumption is found where two sides disagree, not where one side finishes.** Agreeing
