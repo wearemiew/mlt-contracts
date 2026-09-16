@@ -6,8 +6,9 @@ changes no endpoint has no contract.
 ## One file per endpoint
 
 `contracts/<sides>/<verb>-<slug>.md`, where `<sides>` names the two sides that meet on it — for example
-`contracts/frontoffice-backend/post-certidoes.md`. The file holds
-the endpoint's **current** full shape, as one block and nothing else:
+`contracts/frontoffice-backend/post-certidoes.md`. The file holds the endpoint's **current** full
+shape as one block, optionally preceded by a sentence or two saying what the endpoint is for — see
+[EXAMPLE-CONTRACT.md](EXAMPLE-CONTRACT.md):
 
 ````
 ```contract
@@ -39,4 +40,5 @@ as they travel — camelCase, exact.
 ## What a contract never contains
 
 Reasons. Alternatives. Questions. Decisions and their history. Design ids, claim ids, status,
-owner, estimate, links. Prose outside the block. A `TBD` or a `?` makes it a draft, not a contract.
+owner, estimate, links. Text beyond the short orientation above the block. A `TBD` or a `?` makes it
+a draft, not a contract.

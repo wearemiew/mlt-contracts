@@ -5,7 +5,8 @@ consumes it. One file per endpoint, under `contracts/`. The file is the agreemen
 builds exactly what it says, the client side consumes exactly what it says, and neither needs the
 other's reasons.
 
-The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md).
+The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
+[EXAMPLE-CONTRACT.md](EXAMPLE-CONTRACT.md).
 
 ## What this is for
 
