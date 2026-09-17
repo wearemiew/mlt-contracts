@@ -11,7 +11,7 @@ req:
   status          string
   transitionedAt  datetime
 400 JustificationRequired      no justification supplied
-~ 403 NotAuthorizedToOverride    caller holds neither Instrutor standing on this case nor Revisor Jurídico company standing, and is not super admin ← caller does not hold Revisor Jurídico company standing, and is not super admin
+~ 403 NotAuthorizedToOverride    caller holds none of instrutor_interno, instrutor_externo or revisor_juridico on this case, and is not hr_admin or super admin ← caller does not hold Revisor Jurídico company standing, and is not super admin
 404 CaseNotFound               case not in this company
 409 GuardNotOverridable        the surviving block on this transition cannot be overridden
 409 NothingToOverride          the transition was not blocked
