@@ -10,14 +10,17 @@ req:
 + suspicionDate                       date               optional   the art. 352.º anchor — first suspicion of irregular conduct; required when flags.hasPreliminaryInquiry is true
   flags                               CaseFlagsRequest   required
   competenciaConfirmed                bool               required   must be true
-  instructorAccountId                 uuid               required
-  secretaryAccountId                  uuid               optional
+- instructorAccountId                 uuid               required
+- secretaryAccountId                  uuid               optional
++ appointments                        []CaseAppointmentRequest   optional   who holds which roles on the case from the day it opens; may be empty or omitted, and set later
   instructorLegalTrainingPreference   bool               optional
 201:
   caseId   uuid
   status   string
 403 NotAuthorizedToOpenCase      caller may not open cases in this company
-403 InstructorNotEligible       instructorAccountId does not hold eligible standing in this company
+- 403 InstructorNotEligible       instructorAccountId does not hold eligible standing in this company
++ 404 AccountNotFound             an appointments entry names an account that is not a member of this company
++ 422 UnknownCaseRole             an appointments entry names a role that is not a case role
 422 IntakeFieldMissing          a required intake field is missing
 422 KnowledgeDateInFuture       knowledgeDate is later than today
 + 422 SuspicionDateInFuture       suspicionDate is later than today
@@ -27,6 +30,10 @@ req:
 ```
 
 ```types
++ CaseAppointmentRequest
++   accountId  uuid                                                                                    required
++   roles      []enum: instrutor_interno | instrutor_externo | secretario | revisor_juridico | decisor   required   at least one
+
 EmployeeRequest
   name             string                    required
   department       string                    required
