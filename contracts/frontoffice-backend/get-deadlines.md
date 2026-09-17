@@ -10,8 +10,8 @@ GET /companies/{companyId}/cases/{caseId}/deadlines
 ```types
 DeadlineRow
   rule                string                caducidade | prescricao | resposta | pareceres | inicioDiligente | notaDeCulpaAposInquerito
-  dueDate             date
-  basis               string                a sentence, per rule
+~ dueDate             date                  for inicioDiligente, 30 calendar days from suspicionDate ← for inicioDiligente, 30 calendar days from knowledgeDate
+~ basis               string                a sentence, per rule; for inicioDiligente now cites suspicionDate as its anchor ← for inicioDiligente, cited knowledgeDate as its anchor
   elapsed             bool
   remainingDays        int
   dayKind             enum: calendar | working
