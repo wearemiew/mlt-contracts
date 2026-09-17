@@ -4,7 +4,12 @@ name: contract-approval
 # commit, or authored the pull request. Owners come from .github/CODEOWNERS, resolved per file the way
 # GitHub does (last matching rule wins), so one area's contracts can need one set of people and
 # another area's a different set. An approval given to an earlier commit does not count: a new push needs fresh
-# approvals. Re-runs on every push and every review.
+# approvals.
+#
+# A push starts the check. A review does not start another: it re-runs the push's run, so a head
+# commit ever carries one `check`, whose verdict is the latest event's. Two runs of the same name on
+# one commit would both have to pass for the branch rule to be satisfied, and the push's run — made
+# before anyone could approve — fails by construction.
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -14,9 +19,28 @@ on:
 permissions:
   contents: read
   pull-requests: read
+  actions: write
 
 jobs:
+  rerun:
+    if: github.event_name == 'pull_request_review'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const head = context.payload.pull_request.head.sha;
+            const runs = await github.paginate(github.rest.actions.listWorkflowRuns, {
+              ...context.repo, workflow_id: 'contract-approval.yml', head_sha: head, event: 'pull_request', per_page: 100,
+            });
+            const run = runs.sort((a, b) => b.run_number - a.run_number)[0];
+            if (!run) return core.setFailed(`No pull_request run of this workflow on ${head.slice(0, 7)} to re-run.`);
+            if (run.status !== 'completed') return core.info(`Run ${run.id} is still ${run.status}; it will judge the current reviews.`);
+            await github.rest.actions.reRunWorkflow({ ...context.repo, run_id: run.id });
+            core.info(`Re-running ${run.id} on ${head.slice(0, 7)}.`);
+
   check:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
