@@ -4,8 +4,8 @@ holders, and one member may hold several roles on the same case.
 ```contract
 POST /companies/{companyId}/cases/{caseId}/appointments
 req:
-  accountId  uuid                                                        required
-  role       enum: instrutor | secretario | revisor_juridico | decisor   required
+  accountId  uuid                                                                                    required
+  role       enum: instrutor_interno | instrutor_externo | secretario | revisor_juridico | decisor   required
 201:
   appointment  CaseAppointment
 403 NotAuthorizedToAppoint   caller is not this company's hr_admin and is not a super admin
@@ -19,5 +19,5 @@ req:
 CaseAppointment
   caseId     uuid
   accountId  uuid
-  role       enum: instrutor | secretario | revisor_juridico | decisor
+  role       enum: instrutor_interno | instrutor_externo | secretario | revisor_juridico | decisor
 ```
