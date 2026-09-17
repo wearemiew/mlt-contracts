@@ -161,9 +161,14 @@ The format is in [CONTRACT-FORMAT.md](CONTRACT-FORMAT.md); a worked one is in
 | `contracts/portal-ai/` | @pauloedspinho20 · @NunoSilvaMiew |
 | `contracts/backend-ai/` | @NunoSilvaMiew · @henriq350 |
 | `contracts/frontoffice-backend/` | @pauloedspinho20 · @henriq350 |
+| `contracts/draft/` | @henriq350 |
 
 To add an area: one line in CODEOWNERS with its path and everyone who must agree, and a row here. A
 contract file under `contracts/` that no rule covers fails the check — the folder is the decision.
+
+`contracts/draft/` is the exception that proves it: one owner, so a contract there is agreed by one
+party. A file stays there while the shape is still being worked out, and moving it into the area of
+the parties it binds is the act of putting it to them.
 
 ## How a contract is agreed
 
