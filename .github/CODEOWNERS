@@ -8,6 +8,7 @@ contracts/portal-backend/**        @pauloedspinho20 @NunoSilvaMiew @henriq350
 contracts/portal-ai/**             @pauloedspinho20 @NunoSilvaMiew
 contracts/backend-ai/**            @NunoSilvaMiew @henriq350
 contracts/frontoffice-backend/**   @pauloedspinho20 @henriq350
+contracts/dossier/**               @henriq350 @NunoSilvaMiew @pauloedspinho20
 contracts/draft/**                 @henriq350
 
 # Repository configuration and the worked example, not contracts.
