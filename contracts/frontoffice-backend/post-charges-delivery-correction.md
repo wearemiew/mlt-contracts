@@ -1,7 +1,7 @@
 Corrects a previously-recorded Nota de Culpa service — a distinct, audited event, never a silent
 overwrite of the original record. Because the response deadline (art. 355.º) is computed live from the
-service date, correcting it recomputes the deadline immediately; the response flags when that recompute
-shortens or has already elapsed a deadline the arguido may already have been told about.
+service date, correcting it recomputes the deadline immediately; the response flags when the
+corrected due date is earlier than the one previously in effect.
 
 ```contract
 POST /companies/{companyId}/cases/{caseId}/charges-delivery/correction

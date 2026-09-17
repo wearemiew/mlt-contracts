@@ -7,12 +7,13 @@ req:
   method          enum: in_person | registered_letter   required
   proof           string                                required
   deliveredAt     date                                  required
-201:
+200:
   caseId              uuid
   chargesDeliveredAt  date
 400 UnknownDeliveryMethod      method is not a recognised delivery method
 ~ 403 NotAuthorizedToRecordDelivery   caller holds none of management, Instrutor or Secretário do caso standing on this case ← caller holds neither management nor Instrutor standing on this case
 404 CaseNotFound               case not in this company
 409 ChargesNotIssued           the nota de culpa has not been issued yet, so there is nothing to serve
++ 409 ChargesAlreadyDelivered    service was already recorded once — correct it instead, via the correction endpoint below
 422 DeliveryDateInTheFuture    deliveredAt is later than today
 ```
