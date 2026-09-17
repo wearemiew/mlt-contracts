@@ -9,8 +9,9 @@ GET /companies/{companyId}/cases/{caseId}/deadlines
 
 ```types
 DeadlineRow
-  rule                string                caducidade | prescricao | resposta | pareceres | inicioDiligente | notaDeCulpaAposInquerito
-~ dueDate             date                  for inicioDiligente, 30 calendar days from suspicionDate ← for inicioDiligente, 30 calendar days from knowledgeDate
+  rule                enum: …               existing members unchanged
++                            | prescricao     1 calendar year from suspicionDate (CT art. 329.º/1); reported under the same condition as caducidade — while chargesDeliveredAt is unset
+~ dueDate             date                  for inicioDiligente, 30 calendar days from suspicionDate; for prescricao, 1 calendar year from suspicionDate ← for inicioDiligente, 30 calendar days from knowledgeDate
 ~ basis               string                a sentence, per rule; for inicioDiligente now cites suspicionDate as its anchor ← for inicioDiligente, cited knowledgeDate as its anchor
   elapsed             bool
   remainingDays        int
