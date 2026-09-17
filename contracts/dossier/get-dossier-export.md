@@ -1,8 +1,8 @@
 One export, as it stands. The caller polls this until the status settles. A `Ready` export carries
 its manifest — what the artifact contains, part by part — and the path to download it; a `Failed`
 export carries the parts that failed and why, and offers no download: an incomplete legal record is
-never handed over as a complete one. The `DossierExport`, `DossierPart` and `DossierFailure` types
-are owned here.
+never handed over as a complete one. The `DossierExport` type and the `DossierItem` family
+it is built from are owned here.
 
 ```contract
 GET /companies/{companyId}/cases/{caseId}/dossier/{exportId}
@@ -32,11 +32,16 @@ DossierExport
 ```
 
 ```types
-DossierPart
+DossierItem
+  itemId          uuid | null                 the case item this is; null only for a fixed section, which only a part can be
   kind            enum: Cover | Timeline | Checklist | EvidenceIndex | Audit | Deliverable | Evidence | PortalDisclosure
-  title           string                      the part's heading in the artifact
-  itemId          uuid | null                 the case item this part is, for the chosen kinds; null for a fixed section
+  title           string                      what it is called — the part's heading in the artifact, the item's name on the case
+
+DossierPart : DossierItem
   sha256          string | null               of the file this part carries; null for a part the export rendered itself
+
+DossierFailure : DossierItem
+  reason          string                      why it could not be compiled, in the product's language — shown as it stands
 ```
 
 The fixed sections every export contains, in order — the parts of the manifest that are not the
@@ -48,12 +53,4 @@ Timeline        "Cronologia do processo"    every phase transition, in order
 Checklist       "Checklist do processo"     each phase's items and their standing
 EvidenceIndex   "Índice da prova"           every evidence item with its SHA-256, whether or not its file travels
 Audit           "Registo de auditoria"      the whole audit trail; present only when includeAuditLog is true
-```
-
-```types
-DossierFailure
-  itemId          uuid | null                 the item that failed; null when a fixed section failed
-  kind            enum: Cover | Timeline | Checklist | EvidenceIndex | Audit | Deliverable | Evidence | PortalDisclosure
-  title           string                      what failed, as the caller would recognise it
-  reason          string                      why, in the product's language — shown as it stands
 ```

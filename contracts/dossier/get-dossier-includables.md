@@ -13,11 +13,8 @@ GET /companies/{companyId}/cases/{caseId}/dossier/includables
 ```
 
 ```types
-Includable
-  itemId          uuid
-  kind            enum: Deliverable | Evidence | PortalDisclosure
-  title           string                     what the item is called on the case
+Includable : DossierItem (get-dossier-export.md)   never a fixed section, so its itemId is always present
   occurredAt      datetime                   when it entered the case, for ordering
-  available       bool                       false when the stored file cannot be read; an export that includes it will fail
-  unavailableReason  string | null            why it cannot be read, in the product's language; null when available
+  available       bool                       false when the stored file cannot be read; an export including it will fail
+  unavailableReason  string | null           why it cannot be read, in the product's language; null when available
 ```
