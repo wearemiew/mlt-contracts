@@ -1,4 +1,4 @@
-Invites people to the company by email, each with the company role they will hold on joining.
+Invites people to the company by email, each with the titles they will hold on joining.
 
 ```contract
 POST /companies/{companyId}/invites
@@ -11,19 +11,12 @@ req:
 403 NotAuthorizedToGrantHrAdmin   only a super admin may grant hr_admin
 404 CompanyNotFound               company doesn't exist
 422 TooManyInvites                more than 100 invites in one request
-422 InvalidRole                   role is not one of the company roles
 ```
 
 ```types
 InviteItem
-  email  string        required
-  role   enum: …       required
--              | CaseManager
--              | InstructorInternal
--              | InstructorExternal
--              | LegalReviewer
--              | Decider
-+              | Member
+  email  string                                                                   required
+~ roles  []enum: hr_admin | gestor | instrutor | secretario | revisor | decisor   required   may be empty; a row naming an unknown title is Rejected   ← role enum: HrAdmin | Member
 
 InviteResult
   email   string

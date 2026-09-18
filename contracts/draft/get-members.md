@@ -1,4 +1,4 @@
-Lists the company's members and the company role each holds.
+Lists the company's members and the titles each holds.
 
 ```contract
 GET /companies/{companyId}/members
@@ -12,11 +12,5 @@ GET /companies/{companyId}/members
 CompanyMember
   accountId  uuid
   email      string
-  role       enum: …
--                  | CaseManager
--                  | InstructorInternal
--                  | InstructorExternal
--                  | LegalReviewer
--                  | Decider
-+                  | Member
+~ roles      []enum: hr_admin | gestor | instrutor | secretario | revisor | decisor   ← role enum: HrAdmin | Member
 ```

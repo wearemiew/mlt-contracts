@@ -2,6 +2,11 @@ Sets the roles a member holds on a case — the whole set, replacing what they h
 several holders, and one member may hold several roles on the same case. A role already held keeps
 the `assignedBy` and `assignedAt` it was given.
 
+The roles offered for a member are preselected from the titles they hold in the company
+(get-members.md): a member titled `instrutor` is offered `instrutor_interno` ticked. Preselection is
+a default, not a limit — any role may be set for any member, and the server checks nothing against
+the titles.
+
 ```contract
 PUT /companies/{companyId}/cases/{caseId}/appointments/{accountId}
 req:
